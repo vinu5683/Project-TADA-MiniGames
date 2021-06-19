@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroud_global"
+    tools:context=".LoginFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/loginIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="270dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/widelogo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sub1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/loginIcon">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroud_global"
+                android:padding="20dp">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/emailTextField"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rectangle"
+                    android:textColorHint="@color/hint_color"
+                    app:boxStrokeErrorColor="@android:color/holo_red_dark"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:rippleColor="@color/white"
+                    app:startIconContentDescription="Enter only gmail"
+                    app:startIconDrawable="@drawable/ic_baseline_email_24"
+                    app:startIconTint="@color/white"
+                    tools:layout_editor_absoluteX="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/emailEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/backgroud_global"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/white"
+                        android:textColorHighlight="@android:color/holo_green_dark"
+                        android:textSize="20sp"
+                        app:boxStrokeColor="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/passwordTextField"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rectangle"
+                    android:textColorHint="@color/hint_color"
+                    app:boxStrokeErrorColor="@android:color/holo_red_dark"
+                    app:layout_constraintTop_toBottomOf="@id/emailTextField"
+                    app:rippleColor="@color/white"
+                    app:startIconContentDescription="Enter only gmail"
+                    app:startIconDrawable="@drawable/ic_baseline_lock_24"
+                    app:startIconTint="@color/white"
+                    tools:layout_editor_absoluteX="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/passwordEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/backgroud_global"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:textColor="@color/white"
+                        android:textColorHighlight="@android:color/holo_green_dark"
+                        android:textSize="20sp"
+                        app:boxStrokeColor="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btnGetStarted"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/backgroud_global"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:foregroundTint="@color/white"
+                    android:padding="15dp"
+                    android:text="login"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    app:icon="@drawable/ic_baseline_vpn_key_24"
+                    app:iconGravity="start"
+                    app:iconPadding="8dp"
+                    app:iconSize="24dp"
+                    app:iconTint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/passwordTextField"
+                    app:rippleColor="@color/white"
+                    app:strokeColor="@color/white"
+                    app:strokeWidth="1dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/or"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OR"
+            android:gravity="center"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/sub2"
+            app:layout_constraintTop_toBottomOf="@id/sub1" />
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/sub2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/or">
+
+            <com.shobhitpuri.custombuttons.GoogleSignInButton
+                android:layout_width="match_parent"
+                android:id="@+id/signInButton"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:text="@string/google_sign_in"
+                app:isDarkTheme="true" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>
