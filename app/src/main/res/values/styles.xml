@@ -8,5 +8,7 @@
         <item name="android:foreground">@drawable/ripple_effect</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="lottie_autoPlay">true</item>
+        <item name="lottie_loop">true</item>
+
     </style>
 </resources>

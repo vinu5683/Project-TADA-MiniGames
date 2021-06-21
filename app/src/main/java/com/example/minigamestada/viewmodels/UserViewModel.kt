@@ -14,7 +14,6 @@ import javax.inject.Inject
 class UserViewModel @Inject public constructor(val repository: GameRepository) : ViewModel() {
 
     fun getUserDetails(userId: String?): UserModel? {
-
         return repository.getCurrentUserDetails(userId)
 
     }

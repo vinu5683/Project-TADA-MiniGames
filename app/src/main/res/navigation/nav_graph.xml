@@ -120,10 +120,30 @@
         android:id="@+id/TTT_SingleFragment"
         android:name="com.example.minigamestada.TTT_SingleFragment"
         android:label="fragment_t_t_t__single"
-        tools:layout="@layout/fragment_t_t_t__single" />
+        tools:layout="@layout/fragment_t_t_t__single">
+        <action
+            android:id="@+id/action_TTT_SingleFragment_self"
+            app:destination="@id/TTT_SingleFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/TTT_SingleFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/TTT_Two_OffilneFragment"
         android:name="com.example.minigamestada.TTT_Two_OffilneFragment"
         android:label="fragment_t_t_t__two__offilne"
-        tools:layout="@layout/fragment_t_t_t__two__offilne" />
+        tools:layout="@layout/fragment_t_t_t__two__offilne" >
+        <action
+            android:id="@+id/action_TTT_Two_OffilneFragment_self"
+            app:destination="@id/TTT_Two_OffilneFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/TTT_SingleFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

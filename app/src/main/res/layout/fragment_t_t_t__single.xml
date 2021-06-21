@@ -67,6 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/opponentProfilePic_ImageView" />
 
+
     <LinearLayout
         android:id="@+id/singlePlayerBoard"
         android:layout_width="400dp"
@@ -103,7 +104,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />
 
-
         </LinearLayout>
 
         <LinearLayout
@@ -114,40 +114,21 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view21"
+                style="@style/boardstyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/rectangle"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_effect"
-                android:scaleType="centerInside"
-                app:lottie_autoPlay="true" />
+                android:layout_height="match_parent" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view22"
+                style="@style/boardstyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/rectangle"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_effect"
-                android:scaleType="centerInside"
-                app:lottie_autoPlay="true" />
+                android:layout_height="match_parent" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view23"
+                style="@style/boardstyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/rectangle"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_effect"
-                android:scaleType="centerInside"
-                app:lottie_autoPlay="true" />
-
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -159,43 +140,126 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view31"
+                style="@style/boardstyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/rectangle"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_effect"
-                android:scaleType="centerInside"
-                app:lottie_autoPlay="true" />
+                android:layout_height="match_parent" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view32"
+                style="@style/boardstyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/rectangle"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_effect"
-                android:scaleType="centerInside"
-                app:lottie_autoPlay="true" />
+                android:layout_height="match_parent" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view33"
+                style="@style/boardstyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/rectangle"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_effect"
-                android:scaleType="centerInside"
-                app:lottie_autoPlay="true" />
-
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/tossTheCoin"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="false" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/gameOverCaption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:text="You Won The Match"
+        android:textColor="@color/backgroud_global"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/singlePlayerBoard" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/myPlayImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@id/textYours"
+        app:layout_constraintStart_toStartOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true" />
+
+    <TextView
+        android:id="@+id/textYours"
+        android:layout_width="80dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Your's"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/opponentPlayImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="20dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@id/textOpponent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true" />
+
+    <TextView
+        android:id="@+id/textOpponent"
+        android:layout_width="80dp"
+        android:layout_height="26dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Opponent's"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/restartBtn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="@color/backgroud_global"
+        android:fontFamily="sans-serif-smallcaps"
+        android:foregroundTint="@color/white"
+        android:padding="15dp"
+        android:text="Restart"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:icon="@drawable/ic_baseline_restore_24"
+        app:iconGravity="start"
+        app:iconPadding="4dp"
+        app:iconSize="30dp"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="@color/white"
+        app:strokeColor="@color/white"
+        app:strokeWidth="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

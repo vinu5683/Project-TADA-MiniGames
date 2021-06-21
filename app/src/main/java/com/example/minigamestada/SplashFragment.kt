@@ -56,14 +56,14 @@ class SplashFragment : Fragment() {
             if (GoogleSignIn.getLastSignedInAccount(view?.context) != null) {
                 //Check for signed in with google
                 googleSignInAccount = GoogleSignIn.getLastSignedInAccount(view?.context)!!
+
+                viewModel.getUserDetails(googleSignInAccount.id)
                 Handler().postDelayed(Runnable {
-                    viewModel.getUserDetails(PreferenceHelper.readStringFromPreference(LocalKeys.KEY_USER_GOOGLE_ID))
                     navController!!.navigate(R.id.action_splashFragment_to_homeFragment)
                 }, SPLASH_LENGTH)
             } else {
                 //check for signed in with gmail??
                 Handler().postDelayed(Runnable {
-                    viewModel.getUserDetails(PreferenceHelper.readStringFromPreference(LocalKeys.KEY_USER_GOOGLE_ID))
                     navController!!.navigate(R.id.action_splashFragment_to_getStartedFragment)
                 }, SPLASH_LENGTH)
             }
