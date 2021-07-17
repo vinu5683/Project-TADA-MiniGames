@@ -1,16 +1,13 @@
 package com.example.minigamestada.repository
 
-
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.minigamestada.models.Friend
 import com.example.minigamestada.models.GameHistory
 import com.example.minigamestada.models.OnlineUser
 import com.example.minigamestada.models.UserModel
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.messaging.FirebaseMessaging
 
 class GameRepository {
@@ -20,6 +17,8 @@ class GameRepository {
     var isDoneFetching = false
     var gameHistory = MutableLiveData<ArrayList<GameHistory>>()
     var onlineUsersList = MutableLiveData<ArrayList<OnlineUser>>()
+    var myFriends = MutableLiveData<ArrayList<Friend>>()
+    var keepIds = HashSet<String>()
 
     init {
 
@@ -101,12 +100,13 @@ class GameRepository {
     }
 
     fun addMeToOnline(onlineUser: OnlineUser) {
-        if (onlineUser?.id == null) {
+        if (onlineUser.id == null) {
             Log.d("TAG", "addMeToOnline: Failure bcz you passed null")
             return
         }
-        dbRootReference.getReference("onlineUsers").child(onlineUser.id!!.toString())
-            .setValue("online")
+        val x = dbRootReference.getReference("onlineUsers").child(onlineUser.id.toString())
+        x.onDisconnect().removeValue()
+        x.setValue(onlineUser)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     Log.d("TAG", "addMeToOnline: Success")
@@ -132,6 +132,7 @@ class GameRepository {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
+                        gameHistory.value?.clear()
                         snapshot.children.forEach {
                             gameHistory.value?.add(
                                 0,
@@ -154,13 +155,74 @@ class GameRepository {
         return gameHistory
     }
 
-    fun getAllOnlineUsers(): MutableLiveData<java.util.ArrayList<OnlineUser>> {
+    fun getAllOnlineUsers(userId: String?) {
+
+        val childRef = dbRootReference.getReference("onlineUsers")
+        childRef.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+//                    val x: ArrayList<OnlineUser>
+//                    Log.d("TAG", "onChildAdded: $previousChildName")
+//                    val newUser = snapshot.getValue(OnlineUser::class.java)!!
+//                    if (onlineUsersList.value != null) {
+//                        if (keepIds.contains(newUser.id)) {
+//                            return
+//                        } else {
+//                            x = onlineUsersList.value!!
+//                            x.add(newUser)
+//                            onlineUsersList.value = x
+//                        }
+//                    }
+                getOnlineUsers()
+
+
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                if (onlineUsersList.value != null) {
+                    val x = onlineUsersList.value!!
+                    val removedId = snapshot.child("id").value.toString();
+                    for (i in 0 until x.size) {
+                        if (x[i].id == removedId) {
+                            val f = x.remove(x[i])
+                            keepIds.remove(removedId)
+                            Log.d("TAG", "onChildRemoved: $f")
+                            break
+                        }
+                    }
+                    onlineUsersList.value = x
+                } else {
+
+                }
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+
+    }
+
+    private fun getOnlineUsers() {
         dbRootReference.getReference("onlineUsers")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val x = ArrayList<OnlineUser>()
                     if (snapshot.exists()) {
                         snapshot.children.forEach {
-                            onlineUsersList.value?.add(
+                            keepIds.add(it.child("id").value.toString())
+                            Log.d(
+                                "TAG", "onDataChange: testing " + it.toString(),
+                            )
+                            x.add(
                                 0,
                                 OnlineUser(
                                     it.child("id").value.toString(),
@@ -170,17 +232,24 @@ class GameRepository {
                                     it.child("token").value.toString(),
                                 )
                             )
+                            onlineUsersList.value = x
                         }
+                    } else {
+                        Log.d(
+                            "TAG", "onDataChange: " + "not exist",
+                        )
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    Log.d(
+                        "TAG", "onDataChange: " + "not exist error",
+                    )
                 }
 
             })
-
-        return onlineUsersList
     }
+
 
     fun addToGameHistory(gameHistory: GameHistory) {
         dbRootReference.getReference("gamehistory").child(gameHistory.id.toString())
@@ -191,6 +260,41 @@ class GameRepository {
                     Log.d("TAG", "addToGameHistory: Failed bcz " + it.exception?.localizedMessage)
                 }
             }
+    }
+
+    fun addToFriendsList(myId: String, friendId: String) {
+        dbRootReference.getReference("friendslist").child(myId).child(friendId).setValue("friend")
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    Log.d("TAG", "addToFriendsList: success")
+                } else {
+                    Log.d("TAG", "addToFriendsList: success")
+                }
+            }
+    }
+
+    fun getAllMyFriends(myId: String) {
+        dbRootReference.getReference("friendslist").child(myId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        myFriends.value?.clear()
+                        snapshot.children.forEach {
+                            myFriends.value?.add(
+                                Friend(
+                                    it.key,
+                                    it.child(it.key!!).value.toString()
+                                )
+                            )
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("TAG", "onCancelled: Error fetching friends")
+                }
+
+            })
     }
 
 }

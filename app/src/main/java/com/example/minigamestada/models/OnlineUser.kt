@@ -7,4 +7,5 @@ data class OnlineUser(
     val imgUrl: String?,
     val token: String?,
 ) {
+    constructor():this(null,null,null,null,null)
 }

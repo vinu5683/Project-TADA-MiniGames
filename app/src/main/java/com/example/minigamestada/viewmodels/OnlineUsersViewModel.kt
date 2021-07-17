@@ -1,11 +1,17 @@
 package com.example.minigamestada.viewmodels
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.minigamestada.models.GameHistory
 import com.example.minigamestada.models.OnlineUser
 import com.example.minigamestada.repository.GameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -13,7 +19,9 @@ import javax.inject.Inject
 class OnlineUsersViewModel @Inject public constructor(val repository: GameRepository) :
     ViewModel() {
 
-    fun addMeToOnline(onlineUser:OnlineUser) {
+    var onlineUsersList = MutableLiveData<ArrayList<OnlineUser>>()
+
+    fun addMeToOnline(onlineUser: OnlineUser) {
         repository.addMeToOnline(onlineUser)
     }
 
@@ -21,7 +29,14 @@ class OnlineUsersViewModel @Inject public constructor(val repository: GameReposi
         repository.setMeOffline(id)
     }
 
-    fun getAllOnlineUsers(): MutableLiveData<ArrayList<OnlineUser>> {
-        return repository.getAllOnlineUsers()
+
+    fun getAllOnlineUsers(userId: String): MutableLiveData<ArrayList<OnlineUser>> {
+
+        viewModelScope.launch {
+            repository.getAllOnlineUsers(userId)
+            onlineUsersList = repository.onlineUsersList
+        }
+
+        return onlineUsersList
     }
 }

@@ -15,7 +15,6 @@ class AppModule {
     @Provides
     fun providesRepository(): GameRepository {
         return GameRepository()
-        
     }
 
 }

@@ -12,12 +12,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.minigamestada.localdatabases.LocalKeys
+import com.example.minigamestada.localdatabases.PreferenceHelper
 import com.example.minigamestada.models.OnlineUser
 import com.example.minigamestada.recyclerviews.onlineplayers.OnlinePlayersAdapter
 import com.example.minigamestada.viewmodels.GameHistoryViewModel
 import com.example.minigamestada.viewmodels.OnlineUsersViewModel
 import com.example.minigamestada.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class AvailablePlayersFragment : Fragment() {
@@ -26,10 +32,9 @@ class AvailablePlayersFragment : Fragment() {
     val userViewModel by viewModels<UserViewModel>()
     val onlineUserViewModel by viewModels<OnlineUsersViewModel>()
     val gameHistoryViewModel by viewModels<GameHistoryViewModel>()
+    var onlinePlayersList: ArrayList<OnlineUser> = ArrayList<OnlineUser>()
+    var onlinePlayersAdapter: OnlinePlayersAdapter = OnlinePlayersAdapter(onlinePlayersList)
 
-    lateinit var onlinePlayersAdapter: OnlinePlayersAdapter
-
-    var onlinePlayersList: ArrayList<OnlineUser>? = null
 
     lateinit var recyclerView: RecyclerView
     lateinit var txtNumberOfOnlinePlayers: TextView
@@ -45,17 +50,10 @@ class AvailablePlayersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        PreferenceHelper.getSharedPreferences(view.context)
         v = view
         initViewsAndListeners()
-        getOnlinePlayersList()
         setRecyclerViewStuff()
-    }
-
-    private fun setRecyclerViewStuff() {
-        if (onlinePlayersList != null) {
-            onlinePlayersAdapter = OnlinePlayersAdapter(onlinePlayersList!!)
-            recyclerView.adapter = onlinePlayersAdapter
-        }
     }
 
     private fun initViewsAndListeners() {
@@ -64,44 +62,22 @@ class AvailablePlayersFragment : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(v.context, 2)
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        userViewModel.getUser()?.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                onlineUserViewModel.addMeToOnline(
-                    OnlineUser(
-                        it.id,
-                        it.name,
-                        "online",
-                        it.profile_pic,
-                        it.token
-                    )
-                )
-            } else {
-                Log.d("TAG", "onStart: Sorry Not Able To Make you Online")
-            }
-            getOnlinePlayersList()
-        })
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        val userId = userViewModel.getUser()?.value?.id
-        if (userId != null) {
-            onlineUserViewModel.setMeOffline(userId)
-        } else {
-            Log.d("TAG", "onStart: Sorry Not Able To Remove From Online")
-        }
-    }
-
-    private fun getOnlinePlayersList() {
-        onlineUserViewModel.getAllOnlineUsers().observe(viewLifecycleOwner, {
+    private fun setRecyclerViewStuff() {
+        onlinePlayersList.add(OnlineUser("asd", "asd", "asd", "N/A", "asdsaf"))
+        onlineUserViewModel.getAllOnlineUsers(
+            PreferenceHelper.readStringFromPreference(
+                LocalKeys.KEY_USER_GOOGLE_ID
+            )
+        ).observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 onlinePlayersList = it
+                onlinePlayersAdapter = OnlinePlayersAdapter(onlinePlayersList)
+                recyclerView.adapter = onlinePlayersAdapter
+                txtNumberOfOnlinePlayers.text = it.size.toString()
+                onlinePlayersAdapter.notifyDataSetChanged()
+                Log.d("TAG", "setRecyclerViewStuff: ")
             }
+            Log.d("TAG", "setRecyclerViewStuff: " + it.size)
         })
 
     }

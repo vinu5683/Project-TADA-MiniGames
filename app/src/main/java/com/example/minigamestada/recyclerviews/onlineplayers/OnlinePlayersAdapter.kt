@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.minigamestada.R
 import com.example.minigamestada.models.OnlineUser
-import com.example.minigamestada.recyclerviews.onlineplayers.OnlinePlayersViewHolder
+
 
 class OnlinePlayersAdapter(val listOfOnlinePlayers: ArrayList<OnlineUser>) :
     RecyclerView.Adapter<OnlinePlayersViewHolder>() {
+    val hashSet = HashSet<String>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnlinePlayersViewHolder {
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.players_available_list_layout, parent, false)
@@ -17,7 +18,10 @@ class OnlinePlayersAdapter(val listOfOnlinePlayers: ArrayList<OnlineUser>) :
 
     override fun onBindViewHolder(holder: OnlinePlayersViewHolder, position: Int) {
         val onlineuser = listOfOnlinePlayers[position]
-        holder.setData(onlineuser)
+        if (!hashSet.contains(onlineuser.id!!)) {
+            holder.setData(onlineuser)
+            hashSet.add(onlineuser.id)
+        }
     }
 
     override fun getItemCount(): Int {

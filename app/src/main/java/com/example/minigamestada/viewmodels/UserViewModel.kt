@@ -15,7 +15,6 @@ class UserViewModel @Inject public constructor(val repository: GameRepository) :
 
     fun getUserDetails(userId: String?): UserModel? {
         return repository.getCurrentUserDetails(userId)
-
     }
 
     fun getUser(): MutableLiveData<UserModel>? {
@@ -24,6 +23,14 @@ class UserViewModel @Inject public constructor(val repository: GameRepository) :
 
     fun saveUser(account: GoogleSignInAccount) {
         repository.saveUser(account)
+    }
+
+    fun addToFriendsList(myId: String, friendId: String) {
+        repository.addToFriendsList(myId, friendId)
+    }
+
+    fun getAllMyFriends(myId: String) {
+        repository.getAllMyFriends(myId)
     }
 
 
