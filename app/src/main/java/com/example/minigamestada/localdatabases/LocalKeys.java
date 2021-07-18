@@ -1,8 +1,6 @@
 package com.example.minigamestada.localdatabases;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 public class LocalKeys {
 
@@ -11,7 +9,6 @@ public class LocalKeys {
     static HashMap<Integer,Integer> list = new HashMap<>();
 
     public static void main(String[] args) {
-
     }
 
 
