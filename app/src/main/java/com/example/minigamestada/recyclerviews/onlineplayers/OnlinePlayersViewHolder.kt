@@ -10,7 +10,8 @@ import com.example.minigamestada.R
 import com.example.minigamestada.models.OnlineUser
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
-import dagger.hilt.android.AndroidEntryPoint
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
 
 class OnlinePlayersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val cardView: MaterialCardView
