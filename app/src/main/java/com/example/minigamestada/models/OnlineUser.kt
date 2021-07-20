@@ -2,7 +2,7 @@ package com.example.minigamestada.models
 
 data class OnlineUser(
     val id: String?,
-    val name: String?,
+    var name: String?,
     val subTitle: String?,
     val imgUrl: String?,
     val token: String?,

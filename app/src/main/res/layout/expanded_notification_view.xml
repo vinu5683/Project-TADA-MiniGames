@@ -10,6 +10,7 @@
 
 
         <ImageView
+            android:id="@+id/expandedImage"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:src="@drawable/online_green_shape" />
@@ -44,16 +45,17 @@
             android:layout_gravity="bottom">
 
             <Button
+                android:id="@+id/btnAccept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:foregroundTint="@color/black"
-                android:text="Play"
-                android:textColor="@color/black" />
+                android:text="Accept"
+                android:textColor="#348700" />
 
             <Button
+                android:id="@+id/btnIgnore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -61,7 +63,7 @@
                 android:background="@android:color/transparent"
                 android:foregroundTint="@color/black"
                 android:text="Ignore"
-                android:textColor="@color/black" />
+                android:textColor="@color/hint_color" />
         </LinearLayout>
 
 

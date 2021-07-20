@@ -18,22 +18,27 @@ import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.concurrent.ExecutionException;
+
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "TAG";
 
     public MyFirebaseMessagingService() {
+
     }
 
 
-    private void sendNotification(String messageBody, String messageTitle) {
-
+    private void sendNotification(String messageBody, String messageTitle) throws ExecutionException, InterruptedException {
 
         RemoteViews collapsedView = new RemoteViews(getPackageName(),
                 R.layout.collapse_notification_view);
         RemoteViews expandedView = new RemoteViews(getPackageName(),
                 R.layout.expanded_notification_view);
 
+//        Bitmap bitmap;
+
+//        expandedView.setImageViewBitmap(R.id.expandedImage, bitmap);
         collapsedView.setTextViewText(R.id.tvNotificationTitle_C, messageTitle);
         collapsedView.setTextViewText(R.id.tvNotificationDescription_C, messageBody);
 
@@ -44,6 +49,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntentIgnore = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        expandedView.setOnClickPendingIntent(R.id.btnAccept, pendingIntent);
+        expandedView.setOnClickPendingIntent(R.id.btnIgnore, pendingIntentIgnore);
+
 //        Bitmap bpLargeIco = (((BitmapDrawable) getResources().getDrawable(R.drawable.ic_launcher_foreground)).getBitmap());
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -51,7 +61,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                .setContentTitle(messageTitle)
 //                .setContentText(messageBody)
                 .setAutoCancel(true)
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setCustomContentView(collapsedView)
                 .setCustomBigContentView(expandedView)
 //                .setLargeIcon(bpLargeIco)
@@ -68,7 +77,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull @NotNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle());
+        try {
+            Log.d(TAG, "onMessageReceived: inside" + remoteMessage.getNotification().getTitle());
+            sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Log.d("TAG", " From: " + remoteMessage.getFrom() + "\n" + remoteMessage.getData().get("image").toString());
         Log.d(TAG, "From: " + remoteMessage.getData().keySet());
         Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());

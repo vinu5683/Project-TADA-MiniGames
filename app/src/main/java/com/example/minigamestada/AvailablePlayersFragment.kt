@@ -34,7 +34,7 @@ class AvailablePlayersFragment : Fragment(), OnlinePlayersEventListener {
     val onlineUserViewModel by viewModels<OnlineUsersViewModel>()
     val gameHistoryViewModel by viewModels<GameHistoryViewModel>()
     var onlinePlayersList: ArrayList<OnlineUser> = ArrayList<OnlineUser>()
-    var onlinePlayersAdapter: OnlinePlayersAdapter = OnlinePlayersAdapter(onlinePlayersList,this)
+    var onlinePlayersAdapter: OnlinePlayersAdapter = OnlinePlayersAdapter(onlinePlayersList, this)
 
 
     lateinit var recyclerView: RecyclerView
@@ -72,7 +72,7 @@ class AvailablePlayersFragment : Fragment(), OnlinePlayersEventListener {
         ).observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 onlinePlayersList = it
-                onlinePlayersAdapter = OnlinePlayersAdapter(onlinePlayersList,this)
+                onlinePlayersAdapter = OnlinePlayersAdapter(onlinePlayersList, this)
                 recyclerView.adapter = onlinePlayersAdapter
                 txtNumberOfOnlinePlayers.text = it.size.toString()
                 onlinePlayersAdapter.notifyDataSetChanged()
@@ -88,7 +88,12 @@ class AvailablePlayersFragment : Fragment(), OnlinePlayersEventListener {
     }
 
     override fun onSendRequest(onlineUser: OnlineUser) {
-        onlineUserViewModel.sendGameRequest(onlineUser)
+        userViewModel.getUser()?.observe(viewLifecycleOwner, {
+            if (it != null) {
+                onlineUser.name = it.name
+                onlineUserViewModel.sendGameRequest(onlineUser)
+            }
+        })
     }
 
 
