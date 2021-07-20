@@ -16,6 +16,7 @@ import com.example.minigamestada.localdatabases.LocalKeys
 import com.example.minigamestada.localdatabases.PreferenceHelper
 import com.example.minigamestada.models.OnlineUser
 import com.example.minigamestada.recyclerviews.onlineplayers.OnlinePlayersAdapter
+import com.example.minigamestada.recyclerviews.onlineplayers.OnlinePlayersEventListener
 import com.example.minigamestada.viewmodels.GameHistoryViewModel
 import com.example.minigamestada.viewmodels.OnlineUsersViewModel
 import com.example.minigamestada.viewmodels.UserViewModel
@@ -26,14 +27,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class AvailablePlayersFragment : Fragment() {
+class AvailablePlayersFragment : Fragment(), OnlinePlayersEventListener {
 
     private lateinit var v: View
     val userViewModel by viewModels<UserViewModel>()
     val onlineUserViewModel by viewModels<OnlineUsersViewModel>()
     val gameHistoryViewModel by viewModels<GameHistoryViewModel>()
     var onlinePlayersList: ArrayList<OnlineUser> = ArrayList<OnlineUser>()
-    var onlinePlayersAdapter: OnlinePlayersAdapter = OnlinePlayersAdapter(onlinePlayersList)
+    var onlinePlayersAdapter: OnlinePlayersAdapter = OnlinePlayersAdapter(onlinePlayersList,this)
 
 
     lateinit var recyclerView: RecyclerView
@@ -71,7 +72,7 @@ class AvailablePlayersFragment : Fragment() {
         ).observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 onlinePlayersList = it
-                onlinePlayersAdapter = OnlinePlayersAdapter(onlinePlayersList)
+                onlinePlayersAdapter = OnlinePlayersAdapter(onlinePlayersList,this)
                 recyclerView.adapter = onlinePlayersAdapter
                 txtNumberOfOnlinePlayers.text = it.size.toString()
                 onlinePlayersAdapter.notifyDataSetChanged()
@@ -80,6 +81,14 @@ class AvailablePlayersFragment : Fragment() {
             Log.d("TAG", "setRecyclerViewStuff: " + it.size)
         })
 
+    }
+
+    override fun onAddToFriendsList(onlineUser: OnlineUser) {
+
+    }
+
+    override fun onSendRequest(onlineUser: OnlineUser) {
+        onlineUserViewModel.sendGameRequest(onlineUser)
     }
 
 

@@ -2,13 +2,15 @@ package com.example.minigamestada.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.minigamestada.models.Friend
-import com.example.minigamestada.models.GameHistory
-import com.example.minigamestada.models.OnlineUser
-import com.example.minigamestada.models.UserModel
+import com.example.minigamestada.di.AppModule
+import com.example.minigamestada.fcm.Network
+import com.example.minigamestada.models.*
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.database.*
 import com.google.firebase.messaging.FirebaseMessaging
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 class GameRepository {
 
@@ -19,6 +21,8 @@ class GameRepository {
     var onlineUsersList = MutableLiveData<ArrayList<OnlineUser>>()
     var myFriends = MutableLiveData<ArrayList<Friend>>()
     var keepIds = HashSet<String>()
+
+    val apiService = Network.getInstance().create(PushApiService::class.java)
 
     init {
 
@@ -295,6 +299,23 @@ class GameRepository {
                 }
 
             })
+    }
+
+    fun sendGameRequest(onlineUser: OnlineUser) {
+        apiService.sendNotification(
+            onlineUser.token.toString(),
+            "Invite from " + onlineUser.name.toString(),
+            "Hey! wanna play a game with me?"
+        ).enqueue(object : retrofit2.Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+
+            }
+
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+
+            }
+
+        })
     }
 
 }

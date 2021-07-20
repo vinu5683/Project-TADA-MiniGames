@@ -7,7 +7,10 @@ import com.example.minigamestada.R
 import com.example.minigamestada.models.OnlineUser
 
 
-class OnlinePlayersAdapter(val listOfOnlinePlayers: ArrayList<OnlineUser>) :
+class OnlinePlayersAdapter(
+    val listOfOnlinePlayers: ArrayList<OnlineUser>,
+    val onlinePlayersEventListener: OnlinePlayersEventListener
+) :
     RecyclerView.Adapter<OnlinePlayersViewHolder>() {
     val hashSet = HashSet<String>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnlinePlayersViewHolder {
@@ -19,7 +22,7 @@ class OnlinePlayersAdapter(val listOfOnlinePlayers: ArrayList<OnlineUser>) :
     override fun onBindViewHolder(holder: OnlinePlayersViewHolder, position: Int) {
         val onlineuser = listOfOnlinePlayers[position]
         if (!hashSet.contains(onlineuser.id!!)) {
-            holder.setData(onlineuser)
+            holder.setData(onlineuser,onlinePlayersEventListener)
             hashSet.add(onlineuser.id)
         }
     }

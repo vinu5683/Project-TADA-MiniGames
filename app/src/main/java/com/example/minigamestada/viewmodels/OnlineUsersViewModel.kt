@@ -33,4 +33,8 @@ class OnlineUsersViewModel @Inject public constructor(val repository: GameReposi
 
         return onlineUsersList
     }
+
+    fun sendGameRequest(onlineUser: OnlineUser) {
+        repository.sendGameRequest(onlineUser)
+    }
 }

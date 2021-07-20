@@ -32,7 +32,7 @@ class OnlinePlayersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
         userId = "N/A"
     }
 
-    fun setData(onlineuser: OnlineUser) {
+    fun setData(onlineuser: OnlineUser, onlinePlayersEventListener: OnlinePlayersEventListener) {
         try {
             userId = onlineuser.id.toString()
             if (onlineuser.imgUrl != null && onlineuser.imgUrl != "N/A" && onlineuser.imgUrl != "")
@@ -42,7 +42,7 @@ class OnlinePlayersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
             userName.text = onlineuser.name
             userSubTitle.text = onlineuser.subTitle
 
-            actionListeners(onlineuser)
+            actionListeners(onlineuser, onlinePlayersEventListener)
             Log.d("TAG", "setData: " + userId)
         } catch (e: Exception) {
             println("Some error" + e.localizedMessage)
@@ -50,12 +50,15 @@ class OnlinePlayersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
 
     }
 
-    private fun actionListeners(onlineuser: OnlineUser) {
+    private fun actionListeners(
+        onlineuser: OnlineUser,
+        onlinePlayersEventListener: OnlinePlayersEventListener
+    ) {
         addToFriendList.setOnClickListener {
 
         }
         requestGameAction.setOnClickListener {
-
+            onlinePlayersEventListener.onSendRequest(onlineuser)
         }
     }
 
